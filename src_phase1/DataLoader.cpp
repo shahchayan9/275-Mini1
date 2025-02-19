@@ -14,7 +14,7 @@ std::vector<CollisionData> DataLoader::loadCSV(const std::string& filename) {
         return data;
     }
 
-    std::getline(file, line); // Skip header
+    std::getline(file, line); // Skip header  
 
     while (std::getline(file, line)) {
         std::stringstream ss(line);
