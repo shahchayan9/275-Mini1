@@ -15,5 +15,5 @@ SET(OPENMP_CXX_FLAGS "-O3 -fopenmp")
 SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${OPENMP_CXX_FLAGS}" )
 
 # Phase 2
-add_executable(test src_phase2/Main.cpp src_phase2/CrashData.cpp)
+add_executable(test src_phase2.3/Main.cpp src_phase2.3/CrashData.cpp)
 target_link_libraries(test OpenMP::OpenMP_CXX)
