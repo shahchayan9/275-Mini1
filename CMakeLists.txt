@@ -6,7 +6,7 @@ project(MotorVehicleCollisions)
 set(CMAKE_CXX_STANDARD 17)
 
 add_executable(collision_analysis src_phase1.1/Main.cpp src_phase1.1/CrashData.cpp)
-#add_executable(collision_analysis src_phase1/main.cpp src_phase1/DataLoader.cpp src_phase1/SearchEngine.cpp)
+#add_executable(collision_analysis src_phase1.2/Main.cpp src_phase1.2/CrashData.cpp)
 
 # PhAse 2: Data Loading and Search Engine
 

@@ -11,22 +11,29 @@ using namespace std;
 class Crash {
     public:
         Crash(string id, string cd, string ct, string b, string zc, string lat, string lon, string osn, string csn, string ofsn,
-            string inj_p, string kld_p, string inj_ped, string kld_ped, string inj_cyc, string kld_cyc, string inj_mtr, string kld_mtr,
-            string cfv[], string vtc[])
-            : collision_id(id), crash_date(cd), crash_time(ct), borough(b), on_street_name(osn), cross_street_name(csn), off_street_name(ofsn) {
+                string inj_p, string kld_p, string inj_ped, string kld_ped, string inj_cyc, string kld_cyc, string inj_mtr, string kld_mtr,
+                string cfv[], string vtc[]) {
             
-            zip_code = stringToInt(zc);
-            person_injured = stringToInt(inj_p);
-            person_killed = stringToInt(kld_p);
-            pedestrian_injured = stringToInt(inj_ped);
-            pedestrian_killed = stringToInt(kld_ped);
-            cyclist_injured = stringToInt(inj_cyc);
-            cyclist_killed = stringToInt(kld_cyc);
-            motorist_injured = stringToInt(inj_mtr);
-            motorist_killed = stringToInt(kld_mtr);
+            collision_id = trim_string(id);
+            crash_date = trim_string(cd);
+            crash_time = trim_string(ct);
+            borough = trim_string(b);
+            on_street_name = trim_string(osn);
+            cross_street_name = trim_string(csn);
+            off_street_name = trim_string(ofsn);
+            
+            zip_code = string_to_int(zc);
+            person_injured = string_to_int(inj_p);
+            person_killed = string_to_int(kld_p);
+            pedestrian_injured = string_to_int(inj_ped);
+            pedestrian_killed = string_to_int(kld_ped);
+            cyclist_injured = string_to_int(inj_cyc);
+            cyclist_killed = string_to_int(kld_cyc);
+            motorist_injured = string_to_int(inj_mtr);
+            motorist_killed = string_to_int(kld_mtr);
         
-            latitude = stringToFloat(lat);
-            longitude = stringToFloat(lon);
+            latitude = string_to_float(lat);
+            longitude = string_to_float(lon);
         
             for (int i = 0; i < 5; i++) {
                 contributing_factor_vehicle[i] = cfv[i];
@@ -72,7 +79,17 @@ class Crash {
         string contributing_factor_vehicle[5];
         string vehicle_type_code[5];
 
-        int stringToInt(string &str) {
+        string trim_string(string &str) {
+            size_t first = str.find_first_not_of(" \t\n\r");
+            size_t last = str.find_last_not_of(" \t\n\r");
+
+            if (first == string::npos)
+                return "N/A";
+            
+            return str.substr(first, (last - first + 1));
+        }
+
+        int string_to_int(string &str) {
             if (!str.empty() && all_of(str.begin(), str.end(), ::isdigit)) {
                 return stoi(str);
             }
@@ -80,7 +97,7 @@ class Crash {
             return 0;
         }
 
-        float stringToFloat(string &str) {
+        float string_to_float(string &str) {
             if (!str.empty()) {
                 return stof(str);
             }
