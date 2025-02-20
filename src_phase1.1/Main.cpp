@@ -29,4 +29,11 @@ int main() {
     cout << "Number of Brooklyn crashes: " << brooklynCrashes.size() << endl;
     cout << "Query time: " << chrono::duration<double>(end_time - start_time).count() << " seconds.\n";
 
+    start_time = chrono::high_resolution_clock::now();
+    vector<Crash> severeCrashes = crash_data.searchByThreshold(3, 1);
+    end_time = chrono::high_resolution_clock::now();
+
+    cout << "Number of severe crashes: " << severeCrashes.size() << endl;
+    cout << "Query time: " << chrono::duration<double>(end_time - start_time).count() << " seconds.\n";
+
 }

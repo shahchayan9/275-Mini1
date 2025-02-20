@@ -75,3 +75,15 @@ vector<Crash> CrashData::searchByBorough(string borough) {
 
     return query_result;
 }
+
+vector<Crash> CrashData::searchByThreshold(int injury_threshold, int killed_threshold) {
+    vector<Crash> query_result;
+
+    for (auto &crash: crashes) {
+        if (crash.get_person_injured() >= injury_threshold || crash.get_person_killed() >= killed_threshold) {
+            query_result.push_back(crash);
+        }
+    }
+
+    return query_result;
+}

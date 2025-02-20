@@ -37,6 +37,14 @@ class Crash {
         string get_borough() {
             return borough;
         }
+
+        int get_person_injured() {
+            return person_injured;
+        }
+
+        int get_person_killed() {
+            return person_killed;
+        }
     
     private:
         string collision_id;
