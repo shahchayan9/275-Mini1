@@ -1,39 +1,40 @@
 #include <iostream>
 #include <chrono>
-#include "DataLoader.h"
-#include "SearchEngine.h"
+#include <vector>
+#include "CrashData.h"
+
+using namespace std;
 
 int main() {
-    std::string filename = "../data/Motor_Vehicle_Collisions_-_Crashes_20250123.csv";
-    //int num_threads = omp_get_max_threads();  // Get max threads OpenMP will use
-    //std::cout << "Using " << num_threads << " threads.\n";
 
-    // Parallel Data Load
-    auto start_time = std::chrono::high_resolution_clock::now();
-    std::vector<CollisionData> data = DataLoader::loadCSV(filename);
-    auto end_time = std::chrono::high_resolution_clock::now();
-    std::cout << "Parallel Data Load: " << std::chrono::duration<double>(end_time - start_time).count() << " seconds\n";
-
-    if (data.empty()) {
-        std::cerr << "No data loaded. Exiting.\n";
+    string filename = "../data/Motor_Vehicle_Collisions_-_Crashes_20250123.csv";
+    CrashData crash_data;
+    
+    auto start_time = chrono::high_resolution_clock::now();
+    crash_data.loadCrashDataFromCSV(filename);
+    auto end_time = chrono::high_resolution_clock::now();
+    
+    if (crash_data.getCrashes().empty()) {
+        cerr << "No data loaded. Exiting.\n";
         return 1;
     }
 
-    std::cout << "Total records loaded: " << data.size() << std::endl;
+    cout << "Total records loaded: " << crash_data.getCrashes().size() << endl;
+    cout << "Loading time: " << chrono::duration<double>(end_time - start_time).count() << " seconds.\n";
 
-    // Parallel Borough Search
-    std::string target_borough = "BROOKLYN";
-    start_time = std::chrono::high_resolution_clock::now();
-    auto brooklyn_collisions = SearchEngine::searchByBorough(data, target_borough);
-    end_time = std::chrono::high_resolution_clock::now();
-    std::cout << "Parallel Borough Search: " << std::chrono::duration<double>(end_time - start_time).count() << " seconds\n";
+    start_time = chrono::high_resolution_clock::now();
+    vector<Crash> brooklynCrashes = crash_data.searchByBorough("BROOKLYN");
+    end_time = chrono::high_resolution_clock::now();
 
-    // Parallel Injury Search
-    int min_injuries = 3;
-    start_time = std::chrono::high_resolution_clock::now();
-    auto severe_collisions = SearchEngine::searchByInjuryThreshold(data, min_injuries);
-    end_time = std::chrono::high_resolution_clock::now();
-    std::cout << "Parallel Injury Search: " << std::chrono::duration<double>(end_time - start_time).count() << " seconds\n";
+    cout << "Number of Brooklyn crashes: " << brooklynCrashes.size() << endl;
+    cout << "Query time: " << chrono::duration<double>(end_time - start_time).count() << " seconds.\n";
+
+    start_time = chrono::high_resolution_clock::now();
+    vector<Crash> severeCrashes = crash_data.searchByThreshold(3, 1);
+    end_time = chrono::high_resolution_clock::now();
+
+    cout << "Number of severe crashes: " << severeCrashes.size() << endl;
+    cout << "Query time: " << chrono::duration<double>(end_time - start_time).count() << " seconds.\n";
 
     return 0;
 }

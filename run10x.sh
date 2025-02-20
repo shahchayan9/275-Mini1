@@ -8,6 +8,6 @@ for i in {1..10}; do
     rm -rf * >/dev/null 2>&1
     cmake .. >/dev/null 2>&1
     make >/dev/null 2>&1
-    ./collision_analysis
+    ./test
     echo ""
 done
