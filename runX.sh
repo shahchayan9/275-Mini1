@@ -3,7 +3,8 @@
 mkdir -p build
 cd build
 
-for i in {1..10}; do
+x=${1:-10}
+for ((i = 1; i <= x; i++)); do
     echo "Run #$i"
     rm -rf * >/dev/null 2>&1
     cmake .. >/dev/null 2>&1
