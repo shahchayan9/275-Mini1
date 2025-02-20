@@ -12,6 +12,10 @@ class CrashData {
         void loadCrashDataFromCSV(string filename);
         vector<Crash> searchByBorough(string borough);
         vector<Crash> searchByInjuryThreshold(int injury_threshold);
+        
+        vector<Crash> getCrashes() {
+            return crashes;
+        }
 
     private:
         vector<Crash> crashes;
