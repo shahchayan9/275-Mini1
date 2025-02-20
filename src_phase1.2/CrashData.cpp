@@ -26,32 +26,19 @@ void CrashData::loadCrashDataFromCSV(string filename) {
         getline(ss, temp, ',');
 
         getline(ss, borough, ',');
-        getline(ss, temp, ',');
-        getline(ss, temp, ',');
-        getline(ss, temp, ',');
-        getline(ss, temp, ',');
-        getline(ss, temp, ',');
-        getline(ss, temp, ',');
-        getline(ss, temp, ',');
+
+        for (int i = 0; i < 7; i++) {
+            getline(ss, temp, ',');
+        }
         
         getline(ss, person_injured, ',');
         getline(ss, person_killed, ',');
-        getline(ss, temp, ',');
-        getline(ss, temp, ',');
-        getline(ss, temp, ',');
-        getline(ss, temp, ',');
-        getline(ss, temp, ',');
-        getline(ss, temp, ',');
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 11; i++) {
             getline(ss, temp, ',');
         }
 
         getline(ss, collision_id, ',');
-
-        for (int i = 0; i < 5; i++) {
-            getline(ss, temp, ',');
-        }
 
         crashes.emplace_back(collision_id, crash_date, borough, person_injured, person_killed);
     }
