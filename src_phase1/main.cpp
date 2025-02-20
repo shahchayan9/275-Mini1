@@ -4,8 +4,7 @@
 #include "SearchEngine.h"
 
 int main() {
-    std::string filename = "/Users/ankitojha/mini1/data/Motor_Vehicle_Collisions_-_Crashes_20250123.csv";
-    // /Users/ankitojha/mini1/data/Motor_Vehicle_Collisions_-_Crashes_20250123.csv
+    std::string filename = "../data/Motor_Vehicle_Collisions_-_Crashes_20250123.csv";
 
     // Benchmark start
     auto start_time = std::chrono::high_resolution_clock::now();

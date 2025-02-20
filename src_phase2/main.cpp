@@ -4,9 +4,9 @@
 #include "SearchEngine.h"
 
 int main() {
-    std::string filename = "/Users/ankitojha/mini1/data/Motor_Vehicle_Collisions_-_Crashes_20250123.csv";
-    // int num_threads = omp_get_max_threads();  // Get max threads OpenMP will use
-    // std::cout << "Using " << num_threads << " threads.\n";
+    std::string filename = "../data/Motor_Vehicle_Collisions_-_Crashes_20250123.csv";
+    //int num_threads = omp_get_max_threads();  // Get max threads OpenMP will use
+    //std::cout << "Using " << num_threads << " threads.\n";
 
     // Parallel Data Load
     auto start_time = std::chrono::high_resolution_clock::now();
