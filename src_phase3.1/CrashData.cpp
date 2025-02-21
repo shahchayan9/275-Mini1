@@ -18,7 +18,7 @@ void CrashData::loadCrashDataFromCSV(string filename) {
 
     int num_threads = 5;
     long chunk_size = file_size / num_threads;
-    vector<vector<Crash>> thread_data(num_threads);
+    vector<Crash> thread_data(num_threads);
 
     cout << "Using " << num_threads << " threads." << endl;
 
@@ -31,7 +31,6 @@ void CrashData::loadCrashDataFromCSV(string filename) {
         ifstream file(filename);
         file.seekg(start);
 
-        // Ensure we start at the beginning of a new line
         if (thread_id > 0) {
             string dummy;
             getline(file, dummy);
@@ -42,7 +41,7 @@ void CrashData::loadCrashDataFromCSV(string filename) {
             stringstream ss(line);
 
             getline(ss, crash_date, ',');
-            getline(ss, temp, ',');  // Skip one column
+            getline(ss, temp, ',');
             getline(ss, borough, ',');
 
             for (int i = 0; i < 7; i++) getline(ss, temp, ',');
@@ -54,27 +53,31 @@ void CrashData::loadCrashDataFromCSV(string filename) {
 
             getline(ss, collision_id, ',');
 
-            thread_data[thread_id].emplace_back(collision_id, crash_date, borough, person_injured, person_killed);
+            thread_data[thread_id].add_record(collision_id, crash_date, borough, person_injured, person_killed);
         }
     }
 
-    // Merge all thread data into the final crashes vector
-    for (const auto& local_data : thread_data) {
-        crashes.insert(crashes.end(), local_data.begin(), local_data.end());
+    for (auto& local_crash : thread_data) {
+        crashes.get_collision_id().insert(crashes.get_collision_id().end(), local_crash.get_collision_id().begin(), local_crash.get_collision_id().end());
+        crashes.get_crash_date().insert(crashes.get_crash_date().end(), local_crash.get_crash_date().begin(), local_crash.get_crash_date().end());
+        crashes.get_borough().insert(crashes.get_borough().end(), local_crash.get_borough().begin(), local_crash.get_borough().end());
+        crashes.get_person_injured().insert(crashes.get_person_injured().end(), local_crash.get_person_injured().begin(), local_crash.get_person_injured().end());
+        crashes.get_person_killed().insert(crashes.get_person_killed().end(), local_crash.get_person_killed().begin(), local_crash.get_person_killed().end());
     }
 }
 
-vector<Crash> CrashData::searchByBorough(string borough) {
-    vector<Crash> query_result;
+vector<int> CrashData::searchByBorough(string borough) {
+    vector<int> query_result;
 
     #pragma omp parallel
     {
-        vector<Crash> thread_result;
+        vector<string> boroughs = crashes.get_borough();
+        vector<int> thread_result;
 
         #pragma omp for schedule(dynamic) nowait
-        for (size_t i = 0; i < crashes.size(); i++) {
-            if (crashes[i].get_borough() == borough) {
-                thread_result.push_back(crashes[i]);
+        for (size_t i = 0; i < crashes.get_size(); i++) {
+            if (boroughs[i] == borough) {
+                thread_result.push_back(i);
             }
         }
 
@@ -87,17 +90,19 @@ vector<Crash> CrashData::searchByBorough(string borough) {
     return query_result;
 }
 
-vector<Crash> CrashData::searchByThreshold(int injury_threshold, int killed_threshold) {
-    vector<Crash> query_result;
+vector<int> CrashData::searchByThreshold(int injury_threshold, int killed_threshold) {
+    vector<int> query_result;
 
     #pragma omp parallel
     {
-        vector<Crash> thread_result;
+        vector<int> thread_result;
+        vector<int> injuries = crashes.get_person_injured();
+        vector<int> deaths = crashes.get_person_killed();
 
         #pragma omp for schedule(dynamic) nowait
-        for (size_t i = 0; i < crashes.size(); i++) {
-            if (crashes[i].get_person_injured() >= injury_threshold || crashes[i].get_person_killed() >= killed_threshold) {
-                thread_result.push_back(crashes[i]);
+        for (size_t i = 0; i < crashes.get_size(); i++) {
+            if (injuries[i] >= injury_threshold || deaths[i] >= killed_threshold) {
+                thread_result.push_back(i);
             }
         }
 
