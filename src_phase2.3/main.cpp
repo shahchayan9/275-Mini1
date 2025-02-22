@@ -33,7 +33,6 @@ int main() {
              cout << "Query time: " << chrono::duration<double>(end_time - start_time).count() << " seconds.\n";
         
         }
-
         
         #pragma omp section
         {
@@ -45,6 +44,5 @@ int main() {
         }
     }
     
-
     return 0;
 }
