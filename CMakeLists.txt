@@ -4,7 +4,7 @@ project(MotorVehicleCollisions)
 set(CMAKE_CXX_STANDARD 17)
 
 # Phase 1
-add_executable(test src_phase1/Main.cpp src_phase1/CollisionDataset.cpp)
+#add_executable(test src_phase1/Main.cpp src_phase1/CollisionDataset.cpp)
 
 # Phase 1.1
 #add_executable(test src_phase1.1/Main.cpp src_phase1.1/CrashData.cpp)
