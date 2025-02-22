@@ -6,7 +6,7 @@
 using namespace std;
 
 int main() {
-    //todo: change before copying to collaborative repo
+    
     string file_name = "../data/Motor_Vehicle_Collisions_-_Crashes_20250123.csv";
     CollisionDataset dataset;
 
